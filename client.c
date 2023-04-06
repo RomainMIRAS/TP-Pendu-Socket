@@ -11,13 +11,8 @@
 /******************************************************************************/	
 
 
-#include <stdio.h>
-#include <curses.h> 		/* Primitives de gestion d'ecran */
-#include <sys/signal.h>
-#include <sys/wait.h>
-#include<stdlib.h>
-
-#include "fon.h"   		/* primitives de la boite a outils */
+#include "client.h"
+#include "socket_utils.h"
 
 #define SERVICE_DEFAUT "1111"
 #define SERVEUR_DEFAUT "127.0.0.1"
@@ -61,20 +56,31 @@ int main(int argc, char *argv[])
 	
 	client_appli(serveur,service);
 }
-
 /*****************************************************************************/
 void client_appli (char *serveur,char *service)
 
 /* procedure correspondant au traitement du client de votre application */
 
 {
-  
+	// Création de la socket client
+	int id_socket_client = h_socket(AF_INET,SOCK_STREAM);
+	// Bind de la socket client
+	struct sockaddr_in * psockclient = malloc(sizeof(struct sockaddr_in));
+	adr_socket(NULL,"200.0.0.1",SOCK_STREAM,&psockclient);
+	h_bind(id_socket_client,psockclient);
+
+	// Connection à la socket
+	struct sockaddr_in * psockserv = malloc(sizeof(struct sockaddr_in));
+	adr_socket(service,serveur,SOCK_STREAM,&psockserv);
+	h_connect(id_socket_client,psockserv);
+
 	while (1)
 	{
-		
+		send_line(id_socket_client);
 	}
-	
- }
+}
+
+
 
 /*****************************************************************************/
 
