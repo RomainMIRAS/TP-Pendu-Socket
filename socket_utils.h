@@ -17,4 +17,6 @@ void send_line_from_keyboard(int id_socket_client);
 
 void send_string(int id_socket_client,char* ligne,int nombre_char);
 
+void read_line(int id_socket, char *c);
+
 #endif
