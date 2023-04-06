@@ -23,7 +23,6 @@ void send_line_from_keyboard(int id_socket_client){
 		//Supprimer le buffer
 		fflush(stdin);
 
-		
 		ligne = get_line_keybord(ligne,&nombre_char);
 
 		send_string(id_socket_client,ligne,nombre_char);
