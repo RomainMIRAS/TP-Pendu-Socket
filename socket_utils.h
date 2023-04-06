@@ -23,4 +23,6 @@ void send_string(int id_socket_client,char* ligne,int nombre_char);
 
 char* read_line(int id_socket);
 
+void msg_bienvenue(int id_socket);
+
 #endif
