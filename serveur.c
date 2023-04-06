@@ -62,7 +62,27 @@ void serveur_appli(char *service)
 
 {
 
-/* A completer ... */
+	int id_socket_serveur =  h_socket(AF_INET, SOCK_STREAM);
+	struct sockaddr_in * psockserveur = malloc(sizeof(struct sockaddr_in *));
+	adr_socket(service, NULL, SOCK_STREAM, &psockserveur);
+	h_bind(id_socket_serveur, psockserveur);
+	h_listen(id_socket_serveur, 1000);
+	
+	// Création de la socket avec laquelle on communique avec le client
+	int new_s = h_accept(id_socket_serveur, psockserveur);
+
+
+	// Lecture caractère par caractère
+	char car;
+	int valid = 10;
+	while (valid != 0){
+		valid = h_reads(new_s, &car, 1);
+		printf("%c\n", car);
+
+
+	}
+	
+
 
 }
 
