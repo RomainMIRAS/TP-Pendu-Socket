@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "array": "c",
+        "memory": "c",
+        "functional": "c",
+        "tuple": "c",
+        "utility": "c",
+        "ranges": "c",
+        "select.h": "c",
+        "socket_utils.h": "c",
+        "stdio.h": "c",
+        "signal.h": "c"
+    }
+}

@@ -76,10 +76,8 @@ void serveur_appli(char *service)
 	char car;
 	int valid = 10;
 	while (valid != 0){
-		valid = h_reads(new_s, &car, 1);
+		valid = h_reads(new_s, &car, 4);
 		printf("%c\n", car);
-
-
 	}
 	
 
