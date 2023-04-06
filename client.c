@@ -76,7 +76,7 @@ void client_appli (char *serveur,char *service)
 
 	while (1)
 	{
-		send_line(id_socket_client);
+		send_line_from_keyboard(id_socket_client);
 	}
 }
 
