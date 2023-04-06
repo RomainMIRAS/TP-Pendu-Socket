@@ -31,3 +31,10 @@ void send_line(int id_socket_client){
 		h_writes(id_socket_client, ligne, nombre_char);
 		free(ligne);
 }
+
+
+void read_line(int id_socket, char *c){
+	char *nb = malloc(4);
+	h_reads(id_socket, nb, 4);
+	h_reads(id_socket, c, (int)*nb);
+}

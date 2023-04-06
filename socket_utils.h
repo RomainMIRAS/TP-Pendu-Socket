@@ -18,4 +18,6 @@ char* get_line_keybord(char* line,int* nombre_char);
 
 void send_line(int id_socket_client);
 
+void read_line(int id_socket, char *c);
+
 #endif
