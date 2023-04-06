@@ -18,6 +18,7 @@
 #include<stdlib.h>
 
 #include "fon.h"     		/* Primitives de la boite a outils */
+#include "serveur.h"
 
 #define SERVICE_DEFAUT "1111"
 
@@ -54,6 +55,15 @@ int main(int argc,char *argv[])
 	serveur_appli(service);
 }
 
+/* FONCTIONS AUXILIAIRES */
+
+
+void lire_chaine(int id_socket, char *c){
+	char *nb = malloc(4);
+	h_reads(id_socket, nb, 4);
+	h_reads(id_socket, c, (int)*nb);
+}
+
 
 /******************************************************************************/	
 void serveur_appli(char *service)
@@ -67,20 +77,19 @@ void serveur_appli(char *service)
 	adr_socket(service, NULL, SOCK_STREAM, &psockserveur);
 	h_bind(id_socket_serveur, psockserveur);
 	h_listen(id_socket_serveur, 1000);
-	
+
 	// Création de la socket avec laquelle on communique avec le client
 	int new_s = h_accept(id_socket_serveur, psockserveur);
 
 
 	// Lecture caractère par caractère
-	char car;
-	int valid = 10;
-	while (valid != 0){
-		valid = h_reads(new_s, &car, 1);
-		printf("%c\n", car);
-
-
+	char* car = malloc(100);
+	while (1){
+		lire_chaine(new_s, car);
+		printf("ligne reçue : %s\n", car);
+		
 	}
+
 	
 
 
