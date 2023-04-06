@@ -9,6 +9,8 @@
         "select.h": "c",
         "socket_utils.h": "c",
         "stdio.h": "c",
-        "signal.h": "c"
+        "signal.h": "c",
+        "curses.h": "c",
+        "fon.h": "c"
     }
 }

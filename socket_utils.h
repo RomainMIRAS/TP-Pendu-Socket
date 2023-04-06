@@ -1,3 +1,4 @@
+
 #ifndef _SOCKET_UTILS_H_
 #define _SOCKET_UTILS_H_
 
@@ -14,7 +15,12 @@
 #include "fon.h"   		/* primitives de la boite a outils */
 
 #include <string.h>
-    
+
+/**********************************************************/
+// 			PARTIE SOCKET
+/**********************************************************/
+
+
 char* get_line_keybord(char* line,int* nombre_char);
 
 void send_line_from_keyboard(int id_socket_client);
@@ -23,8 +29,15 @@ void send_string(int id_socket_client,char* ligne,int nombre_char);
 
 char* read_line(int id_socket);
 
+/**********************************************************/
+// 			PARTIE GAME
+/**********************************************************/
+
+
 void msg_bienvenue(int id_socket);
 
 void end_game(int id_socket, char *word, int state);
+
+void check_mot(char* mot_a_trouver, char* mot_actuel, char lettre);
 
 #endif

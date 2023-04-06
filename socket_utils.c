@@ -98,3 +98,22 @@ void end_game(int id_socket, char *word, int state){
 	
 	send_string(id_socket, msg, strlen(msg));
 }
+
+
+// Check si la lettre est contenue dans le mot à trouver et update le mot actuel
+// Test si victoire
+void check_mot(char* mot_a_trouver, char* mot_actuel, char lettre){
+
+  // Afin de tester la lettre en entier ( évite la casse )
+  char lettre_lower = tolower(lettre);
+  char lettre_upper = toupper(lettre);
+
+  if((strchr(mot_a_trouver,lettre_upper ) != NULL) || (strchr(mot_a_trouver, lettre_lower) != NULL)) { // Si le mot à trouver contient la lettre
+
+    while (*mot_a_trouver){
+      if (*mot_a_trouver == lettre_lower || *mot_a_trouver == lettre_upper) *mot_actuel = *mot_a_trouver;
+      *mot_actuel++;
+      *mot_a_trouver++;
+    }
+  }
+}

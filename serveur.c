@@ -90,14 +90,17 @@ void serveur_appli(char *service)
 		print_word(word_client);
 		car = read_line(new_s);
 		if (strlen(car) == 1){ // On teste une lettre
+			    check_mot(word,word_client,car[0]);
 
+				// printf("%b\n",string_cmp(mot_a_trouver,mot_actuel));
+				// test de victoire
+			if (string_cmp(word,word_client) == 0){
+				state = WIN;
+			}
 		}
 		else{ // On teste un mot 
 			if(strcmp(car, word) == 0){
 				state = WIN;
-			}
-			else{
-				state = LOOSE;
 			}
 		}
 		printf("Tentative : %s\n", car);
@@ -105,10 +108,9 @@ void serveur_appli(char *service)
 		send_string(new_s, (char *)state, 4);
 	}
 
+	if (n_essais == 0) state = LOOSE;
+
 	end_game(new_s, word, state);
-
-	
-
 
 }
 
