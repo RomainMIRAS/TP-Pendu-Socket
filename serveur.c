@@ -73,9 +73,12 @@ void serveur_appli(char *service)
 
 
 	// Lecture caractère par caractère
-	char* car = malloc(100);
+	char* car;
+	char *msg = malloc(100);
+	msg = "Bienvenue dans le jeu du pendu !\n";
 	while (1){
-		read_line(new_s, car);
+		
+		car = read_line(new_s);
 		printf("ligne reçue : %s\n", car);
 		
 	}

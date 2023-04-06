@@ -38,8 +38,12 @@ void send_string(int id_socket_client,char* ligne,int nombre_char){
 }
 
 
-void read_line(int id_socket, char *c){
+char * read_line(int id_socket){
 	char *nb = malloc(4);
 	h_reads(id_socket, nb, 4);
+
+	char *c = malloc((int)*nb);
 	h_reads(id_socket, c, (int)*nb);
+	
+	return c;
 }
