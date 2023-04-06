@@ -16,16 +16,22 @@ char* get_line_keybord(char* line,int* nombre_char)
 	return line;
 }
 
-void send_line(int id_socket_client){
+void send_line_from_keyboard(int id_socket_client){
 		int nombre_char = 0;
 		char* ligne = malloc(100*sizeof(char));
 
 		//Supprimer le buffer
 		fflush(stdin);
-		printf("test\n");
+
 		
 		ligne = get_line_keybord(ligne,&nombre_char);
 
+		send_string(id_socket_client,ligne,nombre_char);
+
+		free(ligne);
+}
+
+void send_string(int id_socket_client,char* ligne,int nombre_char){
 		h_writes(id_socket_client, (char*)&nombre_char, 4);
 		
 		h_writes(id_socket_client, ligne, nombre_char);
