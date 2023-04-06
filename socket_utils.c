@@ -44,6 +44,41 @@ char * read_line(int id_socket){
 
 	char *c = malloc((int)*nb);
 	h_reads(id_socket, c, (int)*nb);
-	
+
 	return c;
+}
+
+void welcome(int id_socket){
+	char *msg = malloc(100);
+	msg = "Bienvenue dans le jeu du pendu !\n";
+	send_line(id_socket, msg);
+}
+
+char *find_word(char *file, int seed){
+  FILE *f = fopen(file, "r");
+
+  if (f == NULL){
+    printf("Impossible d'ouvrir le fichier %s\n", file);
+    exit(1);
+  }
+
+  char *mot = (char *)malloc(20*sizeof(char));
+
+  for (int i = 0; i <= seed; i++){
+    fgets(mot, 20, f);
+  }
+
+  int length = string_length(mot);
+  mot[length-1] = '\0'; // Supprimer le caractère retour à la ligne '\n'
+  return mot;
+}
+
+char *generate_word(){
+	srand(clock());
+	int seed = rand()%50;
+	return find_word("dico.txt", seed);
+}
+
+void print_word(char *word){
+	
 }

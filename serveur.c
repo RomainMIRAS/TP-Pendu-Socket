@@ -73,14 +73,43 @@ void serveur_appli(char *service)
 
 
 	// Lecture caractère par caractère
-	char* car;
-	char *msg = malloc(100);
-	msg = "Bienvenue dans le jeu du pendu !\n";
-	while (1){
-		
+	char *car;
+
+	// Affichage du message de bienvenue
+	welcome(new_s);
+
+	char *word = generate_word();
+	int n = strlen(word);
+	int state = PLAY;
+	int ncoups = n + 7;
+
+	// Initialisation du pendu
+	char *word_client = (char *)malloc(n*sizeof(char));
+
+	while (state == PLAY){
+		print_word(word_client);
 		car = read_line(new_s);
+		if (strlen(car) == 1){ // On teste une lettre
+
+		}
+		else{ // On teste un mot 
+			if(strcmp(car, word) == 0){
+				state = WIN;
+			}
+			else{
+				state = LOOSE;
+			}
+		}
 		printf("ligne reçue : %s\n", car);
-		
+
+		send_string(new_s, (char *)state, 4);
+	}
+
+	if (state == WIN){ // Le joueur a gagné
+		winner();
+	}
+	else{ // Le joueur a perdu
+		looser();
 	}
 
 	
