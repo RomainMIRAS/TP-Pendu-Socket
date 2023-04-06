@@ -1,6 +1,10 @@
 #ifndef _SOCKET_UTILS_H_
 #define _SOCKET_UTILS_H_
 
+#define WIN 1
+#define LOOSE 0
+#define PLAY 2
+
 #include <stdio.h>
 #include <curses.h> 		/* Primitives de gestion d'ecran */
 #include <sys/signal.h>

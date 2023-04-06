@@ -74,9 +74,20 @@ void client_appli (char *serveur,char *service)
 	adr_socket(service,serveur,SOCK_STREAM,&psockserv);
 	h_connect(id_socket_client,psockserv);
 
-	while (1)
+	char* ligne;
+
+	printf("%s",read_line(id_socket_client));
+
+	int state = PLAY;
+	while (state == PLAY)
 	{
+		ligne = read_line(id_socket_client);
+
+		// Essaie de réponse
 		send_line_from_keyboard(id_socket_client);
+
+		printf(read_line(id_socket_client));
+		state = atoi(read_line(id_socket_client));
 	}
 }
 
