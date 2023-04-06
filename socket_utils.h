@@ -11,6 +11,7 @@
 #include <sys/signal.h>
 #include <sys/wait.h>
 #include<stdlib.h>
+#include<time.h>
 
 #include "fon.h"   		/* primitives de la boite a outils */
 
@@ -34,10 +35,15 @@ char* read_line(int id_socket);
 /**********************************************************/
 
 
-void msg_bienvenue(int id_socket);
+    char *find_word(char *file, int seed);
 
-void end_game(int id_socket, char *word, int state);
+    void msg_bienvenue(int id_socket);
 
-void check_mot(char* mot_a_trouver, char* mot_actuel, char lettre);
+    void end_game(int id_socket, char *word, int state);
 
+    void check_mot(char* mot_a_trouver, char* mot_actuel, char lettre);
+
+    void welcome(int id_socket);
+
+    char *generate_word();
 #endif

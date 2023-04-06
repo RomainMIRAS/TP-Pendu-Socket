@@ -26,15 +26,12 @@ void send_line_from_keyboard(int id_socket_client){
 		ligne = get_line_keybord(ligne,&nombre_char);
 
 		send_string(id_socket_client,ligne,nombre_char);
-
-		free(ligne);
 }
 
 void send_string(int id_socket_client,char* ligne,int nombre_char){
 		h_writes(id_socket_client, (char*)&nombre_char, 4);
 		
 		h_writes(id_socket_client, ligne, nombre_char);
-		free(ligne);
 }
 
 
@@ -49,9 +46,8 @@ char * read_line(int id_socket){
 }
 
 void welcome(int id_socket){
-	char *msg = malloc(100);
-	msg = "Bienvenue dans le jeu du pendu !\n";
-	send_line(id_socket, msg);
+	char *msg = "Bienvenue dans le jeu du pendu !\n";
+	send_string(id_socket, msg,strlen(msg));
 }
 
 char *find_word(char *file, int seed){
@@ -68,7 +64,7 @@ char *find_word(char *file, int seed){
     fgets(mot, 20, f);
   }
 
-  int length = string_length(mot);
+  int length = strlen(mot);
   mot[length-1] = '\0'; // Supprimer le caractère retour à la ligne '\n'
   return mot;
 }
@@ -105,13 +101,13 @@ void end_game(int id_socket, char *word, int state){
 void check_mot(char* mot_a_trouver, char* mot_actuel, char lettre){
 
   // Afin de tester la lettre en entier ( évite la casse )
-  char lettre_lower = tolower(lettre);
-  char lettre_upper = toupper(lettre);
+	//   char lettre_lower = tolower(lettre);
+	//   char lettre_upper = toupper(lettre);
 
-  if((strchr(mot_a_trouver,lettre_upper ) != NULL) || (strchr(mot_a_trouver, lettre_lower) != NULL)) { // Si le mot à trouver contient la lettre
+  if(strchr(mot_a_trouver,lettre ) != NULL) { // Si le mot à trouver contient la lettre
 
     while (*mot_a_trouver){
-      if (*mot_a_trouver == lettre_lower || *mot_a_trouver == lettre_upper) *mot_actuel = *mot_a_trouver;
+      if (*mot_a_trouver == lettre) *mot_actuel = *mot_a_trouver;
       *mot_actuel++;
       *mot_a_trouver++;
     }

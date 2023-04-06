@@ -76,9 +76,11 @@ void client_appli (char *serveur,char *service)
 
 	char* ligne;
 
-	printf("%s",read_line(id_socket_client));
+	//printf("%s",read_line(id_socket_client)); // TODO ENLEVER LE COMMENTAIRE	
 
 	int state = PLAY;
+	printf("Veillez rentrer votre niveau de difficulté : \n");
+	send_line_from_keyboard(id_socket_client);
 	while (state == PLAY)
 	{
 		ligne = read_line(id_socket_client);
@@ -86,7 +88,7 @@ void client_appli (char *serveur,char *service)
 		// Essaie de réponse
 		send_line_from_keyboard(id_socket_client);
 
-		printf(read_line(id_socket_client));
+		printf("MOT ACTUEL : %s",read_line(id_socket_client));
 		state = atoi(read_line(id_socket_client));
 	}
 }

@@ -76,7 +76,7 @@ void serveur_appli(char *service)
 	char *car;
 
 	// Affichage du message de bienvenue
-	welcome(new_s);
+	//welcome(new_s); // TODO ENLEVER LE COMMENTAIRE PLUS TARD
 
 	char *word = generate_word();
 	int n = strlen(word);
@@ -87,14 +87,17 @@ void serveur_appli(char *service)
 	char *word_client = (char *)malloc(n*sizeof(char));
 
 	while (state == PLAY && n_essais < 0){
-		print_word(word_client);
-		car = read_line(new_s);
+		
+		send_string(new_s,word_client,n); // ENVOIE DU MOT AU CLIENT
+
+		car = read_line(new_s);// RECEPTION DE L'ESSAIE CLIENT
+
 		if (strlen(car) == 1){ // On teste une lettre
 			    check_mot(word,word_client,car[0]);
 
 				// printf("%b\n",string_cmp(mot_a_trouver,mot_actuel));
 				// test de victoire
-			if (string_cmp(word,word_client) == 0){
+			if (strcmp(word,word_client) == 0){
 				state = WIN;
 			}
 		}
@@ -105,7 +108,7 @@ void serveur_appli(char *service)
 		}
 		printf("Tentative : %s\n", car);
 
-		send_string(new_s, (char *)state, 4);
+		send_string(new_s, (char *)&state, 4);
 	}
 
 	if (n_essais == 0) state = LOOSE;

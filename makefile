@@ -33,7 +33,7 @@ EXEC = ${OBJ1} client ${OBJ2} serveur
 all: ${EXEC} 
 
 fon.o : fon.h fon.c 
-	gcc -DDEBUG -c fon.c
+	gcc -DDEBUG= -c fon.c
 	#gcc -c fon.c
 
 client.o : fon.h socket_utils.o client.c
