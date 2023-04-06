@@ -25,4 +25,6 @@ char* read_line(int id_socket);
 
 void msg_bienvenue(int id_socket);
 
+void end_game(int id_socket, char *word, int state);
+
 #endif

@@ -79,6 +79,22 @@ char *generate_word(){
 	return find_word("dico.txt", seed);
 }
 
-void print_word(char *word){
+/* void winner(int id_socket, char *word){
+	char *msg = malloc(100;
+	msg = "";
+	send_string();
+} */
+
+void end_game(int id_socket, char *word, int state){
+	char *msg = malloc(100);
+	if (state == WIN){
+		msg = "Félicitations ! Vous avez trouvé le mot";
+	}
+	else{
+		msg = "Désolé ! Vous avez perdu.. Il fallait trouver le mot";
+	}
+
+	strcat(msg, word);
 	
+	send_string(id_socket, msg, strlen(msg));
 }

@@ -81,12 +81,12 @@ void serveur_appli(char *service)
 	char *word = generate_word();
 	int n = strlen(word);
 	int state = PLAY;
-	int ncoups = n + 7;
+	int n_essais = atoi(read_line(new_s));
 
 	// Initialisation du pendu
 	char *word_client = (char *)malloc(n*sizeof(char));
 
-	while (state == PLAY){
+	while (state == PLAY && n_essais < 0){
 		print_word(word_client);
 		car = read_line(new_s);
 		if (strlen(car) == 1){ // On teste une lettre
@@ -100,17 +100,12 @@ void serveur_appli(char *service)
 				state = LOOSE;
 			}
 		}
-		printf("ligne reçue : %s\n", car);
+		printf("Tentative : %s\n", car);
 
 		send_string(new_s, (char *)state, 4);
 	}
 
-	if (state == WIN){ // Le joueur a gagné
-		winner();
-	}
-	else{ // Le joueur a perdu
-		looser();
-	}
+	end_game(new_s, word, state);
 
 	
 
