@@ -66,7 +66,7 @@ void client_appli (char *serveur,char *service)
 	int id_socket_client = h_socket(AF_INET,SOCK_STREAM);
 	// Bind de la socket client
 	struct sockaddr_in * psockclient = malloc(sizeof(struct sockaddr_in));
-	adr_socket(NULL,"200.0.0.1",SOCK_STREAM,&psockclient);
+	adr_socket(NULL,"192.168.141.219",SOCK_STREAM,&psockclient);
 	h_bind(id_socket_client,psockclient);
 
 	// Connection à la socket
@@ -74,23 +74,27 @@ void client_appli (char *serveur,char *service)
 	adr_socket(service,serveur,SOCK_STREAM,&psockserv);
 	h_connect(id_socket_client,psockserv);
 
-	char* ligne;
+	char* ligne; // Lecteur de ligne de Bienvenue
+	printf("%s",read_line(id_socket_client));
 
-	//printf("%s",read_line(id_socket_client)); // TODO ENLEVER LE COMMENTAIRE	
-
-	int state = PLAY;
-	printf("Veillez rentrer votre niveau de difficulté : \n");
+	// Envoie du niveau de difficulté
 	send_line_from_keyboard(id_socket_client);
+	int state = PLAY;
+
+
 	while (state == PLAY)
 	{
 		ligne = read_line(id_socket_client);
-
+		printf("MOT ACTUEL : %s\n",ligne);
 		// Essaie de réponse
 		send_line_from_keyboard(id_socket_client);
-
-		printf("MOT ACTUEL : %s",read_line(id_socket_client));
-		state = atoi(read_line(id_socket_client));
+		
+		state = read_int(id_socket_client);
+		printf("STATE : %d\n",state);
 	}
+	ligne = read_line(id_socket_client);
+	printf("%s",ligne);
+
 }
 
 

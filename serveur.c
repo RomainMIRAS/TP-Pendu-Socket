@@ -64,7 +64,7 @@ void serveur_appli(char *service)
 
 	int id_socket_serveur =  h_socket(AF_INET, SOCK_STREAM);
 	struct sockaddr_in * psockserveur = malloc(sizeof(struct sockaddr_in *));
-	adr_socket(service, NULL, SOCK_STREAM, &psockserveur);
+	adr_socket(service, "127.0.0.1", SOCK_STREAM, &psockserveur);
 	h_bind(id_socket_serveur, psockserveur);
 	h_listen(id_socket_serveur, 1000);
 
@@ -76,25 +76,27 @@ void serveur_appli(char *service)
 	char *car;
 
 	// Affichage du message de bienvenue
-	//welcome(new_s); // TODO ENLEVER LE COMMENTAIRE PLUS TARD
-
+	welcome(new_s); // TODO ENLEVER LE COMMENTAIRE PLUS TARD
 	char *word = generate_word();
 	int n = strlen(word);
 	int state = PLAY;
 	int n_essais = atoi(read_line(new_s));
-
 	// Initialisation du pendu
 	char *word_client = (char *)malloc(n*sizeof(char));
 
-	while (state == PLAY && n_essais < 0){
-		
+	for(int i =0; i < n; i++){
+		word_client[i] = '-';
+	}
+
+	printf("DIF : %d\n\n",n_essais);
+	printf("MOT SERVEUR : %s\n",word);
+
+	while (state == PLAY && n_essais > 0){
 		send_string(new_s,word_client,n); // ENVOIE DU MOT AU CLIENT
-
 		car = read_line(new_s);// RECEPTION DE L'ESSAIE CLIENT
-
+		printf("MOT RECUE : %s\n",car);
 		if (strlen(car) == 1){ // On teste une lettre
 			    check_mot(word,word_client,car[0]);
-
 				// printf("%b\n",string_cmp(mot_a_trouver,mot_actuel));
 				// test de victoire
 			if (strcmp(word,word_client) == 0){
@@ -106,12 +108,12 @@ void serveur_appli(char *service)
 				state = WIN;
 			}
 		}
-		printf("Tentative : %s\n", car);
-
-		send_string(new_s, (char *)&state, 4);
+		printf("STATE : %d\n",state);
+		send_int(new_s,state);
+		n_essais--;
 	}
 
-	if (n_essais == 0) state = LOOSE;
+	if (n_essais == 0 && state != WIN) state = LOOSE;
 
 	end_game(new_s, word, state);
 

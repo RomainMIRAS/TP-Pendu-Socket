@@ -30,6 +30,10 @@ void send_string(int id_socket_client,char* ligne,int nombre_char);
 
 char* read_line(int id_socket);
 
+int read_int(int id_socket);
+
+void send_int(int id_socket_client, int nombre);
+
 /**********************************************************/
 // 			PARTIE GAME
 /**********************************************************/

@@ -1,8 +1,15 @@
 #include "socket_utils.h"
 
+char* itoa(int nombre){
+	char* nb = malloc(4);
+	snprintf(nb, 4, "%d", nombre);
+	return nb;
+}
+
 char* get_line_keybord(char* line,int* nombre_char)
 {
 	// clean
+	fflush(stdin);
 
 	int i = 0;
 	char c;
@@ -21,32 +28,42 @@ void send_line_from_keyboard(int id_socket_client){
 		char* ligne = malloc(100*sizeof(char));
 
 		//Supprimer le buffer
-		fflush(stdin);
-
 		ligne = get_line_keybord(ligne,&nombre_char);
 
 		send_string(id_socket_client,ligne,nombre_char);
 }
 
 void send_string(int id_socket_client,char* ligne,int nombre_char){
-		h_writes(id_socket_client, (char*)&nombre_char, 4);
-		
+		h_writes(id_socket_client, itoa(nombre_char), 4);
 		h_writes(id_socket_client, ligne, nombre_char);
+}
+
+void send_int(int id_socket_client, int nombre){
+	h_writes(id_socket_client, itoa(nombre), 4);
+}
+
+int read_int(int id_socket){
+	fflush(stdout);
+	char *nb = malloc(4);
+	h_reads(id_socket, nb, 4);
+	return atoi(nb);
 }
 
 
 char * read_line(int id_socket){
+	fflush(stdout);
 	char *nb = malloc(4);
 	h_reads(id_socket, nb, 4);
 
-	char *c = malloc((int)*nb);
-	h_reads(id_socket, c, (int)*nb);
+	int nombre_char = atoi(nb);
+	char *c = malloc(nombre_char);
+	h_reads(id_socket, c, nombre_char);
 
 	return c;
 }
 
 void welcome(int id_socket){
-	char *msg = "Bienvenue dans le jeu du pendu !\n";
+	char *msg = "Bienvenue dans le jeu du pendu !\nVeillez rentrer votre niveau de difficulté\n";
 	send_string(id_socket, msg,strlen(msg));
 }
 
@@ -82,7 +99,7 @@ char *generate_word(){
 } */
 
 void end_game(int id_socket, char *word, int state){
-	char *msg = malloc(100);
+	char * msg;
 	if (state == WIN){
 		msg = "Félicitations ! Vous avez trouvé le mot";
 	}
