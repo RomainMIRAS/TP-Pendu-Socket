@@ -92,8 +92,9 @@ void client_appli (char *serveur,char *service)
 		state = read_int(id_socket_client);
 		printf("STATE : %d\n",state);
 	}
+
 	ligne = read_line(id_socket_client);
-	printf("%s",ligne);
+	printf("%s\n",ligne);
 
 }
 

@@ -99,17 +99,21 @@ char *generate_word(){
 } */
 
 void end_game(int id_socket, char *word, int state){
-	char * msg;
+	char* msg;
 	if (state == WIN){
-		msg = "Félicitations ! Vous avez trouvé le mot";
+		msg = "Félicitations ! Vous avez trouvé le mot : ";
 	}
 	else{
-		msg = "Désolé ! Vous avez perdu.. Il fallait trouver le mot";
+		msg = "Désolé ! Vous avez perdu.. Il fallait trouver le mot : ";
 	}
 
-	strcat(msg, word);
-	
-	send_string(id_socket, msg, strlen(msg));
+	int length = strlen(word) + strlen(msg) + 1;
+	char* new_msg = malloc(length);  // allocate memory 
+	strcpy(new_msg, msg);  // copy first string 
+	strcat(new_msg, word);  // then check your function to concat strings
+	printf("DEBUG \n");
+	send_string(id_socket, new_msg, length);
+	printf("DEBUG \n");
 }
 
 

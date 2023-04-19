@@ -113,7 +113,7 @@ void serveur_appli(char *service)
 		n_essais--;
 	}
 
-	if (n_essais == 0 && state != WIN) state = LOOSE;
+	if (n_essais <= 0 && state != WIN) state = LOOSE;
 
 	end_game(new_s, word, state);
 
