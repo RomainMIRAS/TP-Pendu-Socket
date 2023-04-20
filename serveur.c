@@ -69,7 +69,12 @@ void serveur_appli(char *service)
 	h_listen(id_socket_serveur, 1000);
 
 	// Création de la socket avec laquelle on communique avec le client
-	int new_s = h_accept(id_socket_serveur, psockserveur);
+	int new_s;
+	while(1){
+		new_s = h_accept(id_socket_serveur, psockserveur);
+		int pid = fork();
+		if (pid == 0) break;
+	}
 
 
 	// Lecture caractère par caractère
@@ -78,39 +83,36 @@ void serveur_appli(char *service)
 	// Affichage du message de bienvenue
 	welcome(new_s); // TODO ENLEVER LE COMMENTAIRE PLUS TARD
 	char *word = generate_word();
+	printf("Connection avec la socket %d \nMot pour %d : %s", new_s,new_s,word);	
 	int n = strlen(word);
 	int state = PLAY;
-	int n_essais = atoi(read_line(new_s));
+	int n_essais = atoi(read_line(new_s)) + n;
 	// Initialisation du pendu
 	char *word_client = (char *)malloc(n*sizeof(char));
 
 	for(int i =0; i < n; i++){
 		word_client[i] = '-';
 	}
+	send_int(new_s,n_essais);
+	while (state == PLAY && n_essais != 0){
 
-	printf("DIF : %d\n\n",n_essais);
-	printf("MOT SERVEUR : %s\n",word);
-
-	while (state == PLAY && n_essais > 0){
 		send_string(new_s,word_client,n); // ENVOIE DU MOT AU CLIENT
 		car = read_line(new_s);// RECEPTION DE L'ESSAIE CLIENT
-		printf("MOT RECUE : %s\n",car);
 		if (strlen(car) == 1){ // On teste une lettre
 			    check_mot(word,word_client,car[0]);
-				// printf("%b\n",string_cmp(mot_a_trouver,mot_actuel));
 				// test de victoire
 			if (strcmp(word,word_client) == 0){
 				state = WIN;
 			}
-		}
+		}	
 		else{ // On teste un mot 
 			if(strcmp(car, word) == 0){
 				state = WIN;
 			}
 		}
-		printf("STATE : %d\n",state);
-		send_int(new_s,state);
 		n_essais--;
+		send_int(new_s,n_essais);
+		send_int(new_s,state);
 	}
 
 	if (n_essais <= 0 && state != WIN) state = LOOSE;

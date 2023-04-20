@@ -10,6 +10,24 @@
 /*									      */
 /******************************************************************************/	
 
+#include <stdio.h>
+
+int print_image()
+{
+	char *filename = "WELCOME.txt";
+    FILE *fptr = NULL;
+ 
+    if((fptr = fopen(filename,"r")) == NULL)
+    {
+        fprintf(stderr,"error opening %s\n",filename);
+        return 1;
+    }
+    char read_string[128];
+ 
+    while(fgets(read_string,sizeof(read_string),fptr) != NULL)
+        printf("%s",read_string);
+}
+
 
 #include "client.h"
 #include "socket_utils.h"
@@ -66,35 +84,36 @@ void client_appli (char *serveur,char *service)
 	int id_socket_client = h_socket(AF_INET,SOCK_STREAM);
 	// Bind de la socket client
 	struct sockaddr_in * psockclient = malloc(sizeof(struct sockaddr_in));
-	adr_socket(NULL,"192.168.141.219",SOCK_STREAM,&psockclient);
+	adr_socket(NULL,"130.190.98.194",SOCK_STREAM,&psockclient);
 	h_bind(id_socket_client,psockclient);
 
 	// Connection à la socket
 	struct sockaddr_in * psockserv = malloc(sizeof(struct sockaddr_in));
 	adr_socket(service,serveur,SOCK_STREAM,&psockserv);
 	h_connect(id_socket_client,psockserv);
-
+	print_image();
 	char* ligne; // Lecteur de ligne de Bienvenue
 	printf("%s",read_line(id_socket_client));
 
 	// Envoie du niveau de difficulté
 	send_line_from_keyboard(id_socket_client);
+	int nb_essais = read_int(id_socket_client);
 	int state = PLAY;
 
-
-	while (state == PLAY)
-	{
+	while (state == PLAY && nb_essais != 0)
+	{	
+		printf("Nombre d'essaie restant : %d\n",nb_essais);
 		ligne = read_line(id_socket_client);
 		printf("MOT ACTUEL : %s\n",ligne);
 		// Essaie de réponse
 		send_line_from_keyboard(id_socket_client);
-		
+		nb_essais = read_int(id_socket_client);
 		state = read_int(id_socket_client);
-		printf("STATE : %d\n",state);
 	}
 
 	ligne = read_line(id_socket_client);
 	printf("%s\n",ligne);
+	
 
 }
 
