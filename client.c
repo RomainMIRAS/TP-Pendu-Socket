@@ -28,15 +28,12 @@ int print_image()
         printf("%s",read_string);
 }
 
-
-#include "client.h"
 #include "socket_utils.h"
 
 #define SERVICE_DEFAUT "1111"
 #define SERVEUR_DEFAUT "127.0.0.1"
 
-void client_appli (char *serveur, char *service);
-
+void client_appli (char *serveur,char *service, char* client); /* programme client */
 
 /*****************************************************************************/
 /*--------------- programme client -----------------------*/
@@ -44,38 +41,33 @@ void client_appli (char *serveur, char *service);
 int main(int argc, char *argv[])
 {
 
-	char *serveur= SERVEUR_DEFAUT; /* serveur par defaut */
-	char *service= SERVICE_DEFAUT; /* numero de service par defaut (no de port) */
+	char *service = SERVICE_DEFAUT; /* numero de service par defaut (no de port) */
+	char *serveur = SERVEUR_DEFAUT; /* nom du serveur */
+	if (argc < 2 ){
+		printf("Usage:client_ip [serveur_ip] [service_port] (nom ou port) \n");
+	} else {
+		/* serveur est le nom (ou l'adresse IP) auquel le client va acceder */
+		/* service le numero de port sur le serveur correspondant au  */
+		/* service desire par le client */
+		//client_appli(serveur,service,client);
+		switch (argc)
+		{
+		case 3:
+			serveur = argv[2];
+			break;
+		case 4:
+			serveur = argv[2];
+			service = argv[3];
+			break;
+		default:
+			break;
+		}
 
-
-	/* Permet de passer un nombre de parametre variable a l'executable */
-	switch(argc)
-	{
- 	case 1 :		/* arguments par defaut */
-		  printf("serveur par defaut: %s\n",serveur);
-		  printf("service par defaut: %s\n",service);
-		  break;
-  	case 2 :		/* serveur renseigne  */
-		  serveur=argv[1];
-		  printf("service par defaut: %s\n",service);
-		  break;
-  	case 3 :		/* serveur, service renseignes */
-		  serveur=argv[1];
-		  service=argv[2];
-		  break;
-    default:
-		  printf("Usage:client serveur(nom ou @IP)  service (nom ou port) \n");
-		  exit(1);
+		client_appli(serveur,service,argv[1]);}
 	}
 
-	/* serveur est le nom (ou l'adresse IP) auquel le client va acceder */
-	/* service le numero de port sur le serveur correspondant au  */
-	/* service desire par le client */
-	
-	client_appli(serveur,service);
-}
 /*****************************************************************************/
-void client_appli (char *serveur,char *service)
+void client_appli (char *serveur,char *service, char* client)
 
 /* procedure correspondant au traitement du client de votre application */
 
@@ -84,7 +76,7 @@ void client_appli (char *serveur,char *service)
 	int id_socket_client = h_socket(AF_INET,SOCK_STREAM);
 	// Bind de la socket client
 	struct sockaddr_in * psockclient = malloc(sizeof(struct sockaddr_in));
-	adr_socket(NULL,"130.190.98.194",SOCK_STREAM,&psockclient);
+	adr_socket(NULL,client,SOCK_STREAM,&psockclient);
 	h_bind(id_socket_client,psockclient);
 
 	// Connection à la socket

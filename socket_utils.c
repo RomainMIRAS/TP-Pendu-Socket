@@ -1,11 +1,13 @@
 #include "socket_utils.h"
 
+// Convertisseur d'entier en chaine de caractére
 char* itoa(int nombre){
 	char* nb = malloc(4);
 	snprintf(nb, 4, "%d", nombre);
 	return nb;
 }
 
+// Récupére une ligne de la console
 char* get_line_keybord(char* line,int* nombre_char)
 {
 	// clean
@@ -23,6 +25,7 @@ char* get_line_keybord(char* line,int* nombre_char)
 	return line;
 }
 
+//Envoie une ligne de la console dans la socket
 void send_line_from_keyboard(int id_socket_client){
 		int nombre_char = 0;
 		char* ligne = malloc(100*sizeof(char));
@@ -33,15 +36,18 @@ void send_line_from_keyboard(int id_socket_client){
 		send_string(id_socket_client,ligne,nombre_char);
 }
 
+// Envoie une ligne dans la socket
 void send_string(int id_socket_client,char* ligne,int nombre_char){
 		h_writes(id_socket_client, itoa(nombre_char), 4);
 		h_writes(id_socket_client, ligne, nombre_char);
 }
 
+// Envoie un entier dans la socket
 void send_int(int id_socket_client, int nombre){
 	h_writes(id_socket_client, itoa(nombre), 4);
 }
 
+// Lit un entier de la socket
 int read_int(int id_socket){
 	fflush(stdout);
 	char *nb = malloc(4);
@@ -49,7 +55,7 @@ int read_int(int id_socket){
 	return atoi(nb);
 }
 
-
+// Lit une ligne de la socket
 char * read_line(int id_socket){
 	fflush(stdout);
 	char *nb = malloc(4);
@@ -62,11 +68,13 @@ char * read_line(int id_socket){
 	return c;
 }
 
+// Envoie du message de bienvenue
 void welcome(int id_socket){
-	char *msg = "Bienvenue dans le jeu du pendu !\nVeillez rentrer votre niveau de difficulté\n";
+	char *msg = "Bienvenue dans le jeu du pendu !\nVeillez rentrer votre niveau de facilité :\n(Nombre d'essaie supplémentaire)\n";
 	send_string(id_socket, msg,strlen(msg));
 }
 
+// Génère un mot aléatoire dans un fichier
 char *find_word(char *file, int seed){
   FILE *f = fopen(file, "r");
 
@@ -86,18 +94,14 @@ char *find_word(char *file, int seed){
   return mot;
 }
 
+// Génère un mot aléatoire
 char *generate_word(){
 	srand(clock());
 	int seed = rand()%50;
 	return find_word("dico.txt", seed);
 }
 
-/* void winner(int id_socket, char *word){
-	char *msg = malloc(100;
-	msg = "";
-	send_string();
-} */
-
+// Envoie l'état du jeu de fin au client
 void end_game(int id_socket, char *word, int state){
 	char* msg;
 	if (state == WIN){

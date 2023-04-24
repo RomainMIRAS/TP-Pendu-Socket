@@ -93,6 +93,7 @@ void serveur_appli(char *service)
 	for(int i =0; i < n; i++){
 		word_client[i] = '-';
 	}
+
 	send_int(new_s,n_essais);
 	while (state == PLAY && n_essais != 0){
 
@@ -110,9 +111,10 @@ void serveur_appli(char *service)
 				state = WIN;
 			}
 		}
+
 		n_essais--;
-		send_int(new_s,n_essais);
-		send_int(new_s,state);
+		send_int(new_s,n_essais); // Envoi du nombre d'essaie restant
+		send_int(new_s,state); // Envoi du nombre d'essaie restant
 	}
 
 	if (n_essais <= 0 && state != WIN) state = LOOSE;
