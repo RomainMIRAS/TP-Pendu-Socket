@@ -115,9 +115,7 @@ void end_game(int id_socket, char *word, int state){
 	char* new_msg = malloc(length);  // allocate memory 
 	strcpy(new_msg, msg);  // copy first string 
 	strcat(new_msg, word);  // then check your function to concat strings
-	printf("DEBUG \n");
 	send_string(id_socket, new_msg, length);
-	printf("DEBUG \n");
 }
 
 

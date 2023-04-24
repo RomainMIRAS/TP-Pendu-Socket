@@ -64,7 +64,7 @@ void serveur_appli(char *service)
 
 	int id_socket_serveur =  h_socket(AF_INET, SOCK_STREAM);
 	struct sockaddr_in * psockserveur = malloc(sizeof(struct sockaddr_in *));
-	adr_socket(service, "127.0.0.1", SOCK_STREAM, &psockserveur);
+	adr_socket(service, NULL, SOCK_STREAM, &psockserveur);
 	h_bind(id_socket_serveur, psockserveur);
 	h_listen(id_socket_serveur, 1000);
 
@@ -121,7 +121,6 @@ void serveur_appli(char *service)
 
 	end_game(new_s, word, state);
 	h_close(new_s);
-
 }
 
 /******************************************************************************/	
