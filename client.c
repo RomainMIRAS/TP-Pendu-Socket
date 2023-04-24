@@ -114,6 +114,7 @@ void client_appli (char *serveur,char *service)
 	ligne = read_line(id_socket_client);
 	printf("%s\n",ligne);
 	
+	h_close(id_socket_client);
 
 }
 
