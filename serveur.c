@@ -83,7 +83,7 @@ void serveur_appli(char *service)
 	// Affichage du message de bienvenue
 	welcome(new_s); // TODO ENLEVER LE COMMENTAIRE PLUS TARD
 	char *word = generate_word();
-	printf("Connection avec la socket %d \nMot pour %d : %s", new_s,new_s,word);	
+	printf("Connection avec la socket %d \nMot pour %d : %s\n", new_s,new_s,word);	
 	int n = strlen(word);
 	int state = PLAY;
 	int n_essais = atoi(read_line(new_s)) + n;

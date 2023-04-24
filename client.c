@@ -31,7 +31,6 @@ int print_image()
 #include "socket_utils.h"
 
 #define SERVICE_DEFAUT "1111"
-#define SERVEUR_DEFAUT "127.0.0.1"
 
 void client_appli (char *serveur,char *service, char* client); /* programme client */
 
@@ -42,28 +41,19 @@ int main(int argc, char *argv[])
 {
 
 	char *service = SERVICE_DEFAUT; /* numero de service par defaut (no de port) */
-	char *serveur = SERVEUR_DEFAUT; /* nom du serveur */
-	if (argc < 2 ){
-		printf("Usage:client_ip [serveur_ip] [service_port] (nom ou port) \n");
+	if (argc < 3 ){
+		printf("Usage:client_ip serveur_ip [service_port] (nom ou port) \n");
 	} else {
 		/* serveur est le nom (ou l'adresse IP) auquel le client va acceder */
 		/* service le numero de port sur le serveur correspondant au  */
 		/* service desire par le client */
 		//client_appli(serveur,service,client);
-		switch (argc)
-		{
-		case 3:
-			serveur = argv[2];
-			break;
-		case 4:
-			serveur = argv[2];
+
+		if (argc == 4){
 			service = argv[3];
-			break;
-		default:
-			break;
 		}
 
-		client_appli(serveur,service,argv[1]);}
+		client_appli(argv[2],service,argv[1]);}
 	}
 
 /*****************************************************************************/
@@ -85,8 +75,8 @@ void client_appli (char *serveur,char *service, char* client)
 	h_connect(id_socket_client,psockserv);
 	print_image();
 	char* ligne; // Lecteur de ligne de Bienvenue
-	printf("%s",read_line(id_socket_client));
-
+	printf("%s\n",read_line(id_socket_client));
+	
 	// Envoie du niveau de difficulté
 	send_line_from_keyboard(id_socket_client);
 	int nb_essais = read_int(id_socket_client);
